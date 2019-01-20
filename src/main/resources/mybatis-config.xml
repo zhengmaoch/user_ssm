@@ -33,7 +33,7 @@
     </environments>
 
     <mappers>
-        <mapper resource="com/chang/mapper/UserMapper.xml"/>
+        <mapper resource="com/chang/mapper/UserDao.xml"/>
     </mappers>
 
 </configuration>
