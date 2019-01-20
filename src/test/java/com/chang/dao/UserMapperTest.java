@@ -30,6 +30,7 @@ public class UserMapperTest {
             UserMapper dao = sqlSession.getMapper(UserMapper.class);
             int result = dao.insert(user);
             User user1 = dao.selectByPrimaryKey(user.getId());
+            dao.deleteByPrimaryKey(user.getId());
             sqlSession.commit();
             Assert.assertTrue(user1.getId().equals(user.getId()));
         } catch (Exception e){
