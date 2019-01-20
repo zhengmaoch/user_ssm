@@ -1,6 +1,5 @@
 package com.chang.dao;
 
-import com.chang.domain.User;
 import com.chang.utils.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;

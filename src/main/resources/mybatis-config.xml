@@ -16,9 +16,6 @@
         <setting name="useGeneratedKeys" value="true"/>
     </settings>
 
-    <typeAliases>
-        <typeAlias type="com.chang.domain.User" alias="user"/>
-    </typeAliases>
     
     <environments default="development">
         <environment id="development">
@@ -32,8 +29,5 @@
         </environment>
     </environments>
 
-    <mappers>
-        <mapper resource="com/chang/mapper/UserMapper.xml"/>
-    </mappers>
 
 </configuration>
