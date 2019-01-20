@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class UserMapperTest {
 
@@ -14,6 +15,7 @@ public class UserMapperTest {
     public void testAdd(){
 
         User user = new User();
+        user.setId(UUID.randomUUID().toString().replace("-",""));
         user.setUsername("zhangsan");
         user.setPassword("123456");
         user.setNickname("张三");
@@ -26,9 +28,9 @@ public class UserMapperTest {
             sqlSession = SqlSessionFactoryUtil.openSession();
             UserMapper dao = sqlSession.getMapper(UserMapper.class);
             int result = dao.insert(user);
-//            dao.deleteByPrimaryKey(user.getId());
+            User user1 = dao.selectByPrimaryKey(user.getId());
             sqlSession.commit();
-            Assert.assertTrue(result == 1);
+            Assert.assertTrue(user.getId() == user1.getId());
         } catch (Exception e){
             System.out.println(e);
             sqlSession.rollback();
