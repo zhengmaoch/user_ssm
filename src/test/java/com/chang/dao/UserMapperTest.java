@@ -7,12 +7,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class UserMapperTest {
 
     @Test
-    public void testInsert(){
+    public void testAdd(){
 
         String userid = UUID.randomUUID().toString().replace("-","");
         User user = new User();
@@ -27,12 +28,14 @@ public class UserMapperTest {
         SqlSession sqlSession = null;
         try {
             sqlSession = SqlSessionFactoryUtil.openSession();
-            UserMapper dao = sqlSession.getMapper(UserMapper.class);
-            int result = dao.insert(user);
-            User user1 = dao.selectByPrimaryKey(user.getId());
-            dao.deleteByPrimaryKey(user.getId());
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            int result = mapper.add(user);
+            user.setUsername("lisi");
+            mapper.update(user);
+            User user1 = mapper.getByUsername("lisi").get(0);
+            mapper.delete(user1.getId());
             sqlSession.commit();
-            Assert.assertTrue(user1.getId().equals(user.getId()));
+            Assert.assertTrue(user1.getId().equals(userid));
         } catch (Exception e){
             System.out.println(e);
             sqlSession.rollback();
@@ -42,73 +45,4 @@ public class UserMapperTest {
             }
         }
     }
-
-//    @Test
-//    public void testUpdate(){
-//        User user = new User();
-//        user.setUsername("zhangsan");
-//        user.setPassword("123456");
-//        user.setNikename("张三");
-//        user.setEmail("zhangsan@qq.com");
-//        user.setBirthday(new Date());
-//        user.setCreatedTime(new Date());
-//
-//        UserDaoImpl dao = new UserDaoImpl();
-//        dao.add(user);
-//
-//        User user1 = dao.find("zhangsan");
-//        user1.setUsername("lisi");
-//        dao.update(user1);
-//
-//        User user2 = dao.find("lisi");
-//        Assert.assertTrue(user2 != null);
-//        dao.delete(user2);
-//    }
-//
-//    @Test
-//    public void testFind(){
-//
-//        User user = new User();
-//        user.setUsername("zhangsan");
-//        user.setPassword("123456");
-//        user.setNikename("张三");
-//        user.setEmail("zhangsan@qq.com");
-//        user.setBirthday(new Date());
-//        user.setCreatedTime(new Date());
-//
-//        UserDaoImpl dao = new UserDaoImpl();
-//        dao.add(user);
-//
-//        User user1 = dao.find("xxx");
-//        Assert.assertTrue(user1 == null);
-//
-//        User user2 = dao.find("zhangsan");
-//        Assert.assertTrue(user2 != null);
-//
-//        User user3 = dao.find("zhangsan","123456");
-//        Assert.assertTrue(user3 != null);
-//
-//        dao.delete(user3);
-//
-//    }
-//
-//    @Test
-//    public void testDelete(){
-//
-//        User user = new User();
-//        user.setUsername("zhangsan");
-//        user.setPassword("123456");
-//        user.setNikename("张三");
-//        user.setEmail("zhangsan@qq.com");
-//        user.setBirthday(new Date());
-//        user.setCreatedTime(new Date());
-//
-//        UserDaoImpl dao = new UserDaoImpl();
-//        dao.add(user);
-//
-//        User user1 = dao.find("zhangsan");
-//        dao.delete(user1);
-//        User user2 = dao.find("zhangsan");
-//        Assert.assertTrue(user2 == null);
-//    }
 }
