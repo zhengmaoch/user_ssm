@@ -12,10 +12,11 @@ import java.util.UUID;
 public class UserMapperTest {
 
     @Test
-    public void testAdd(){
+    public void testInsert(){
 
+        String userid = UUID.randomUUID().toString().replace("-","");
         User user = new User();
-        user.setId(UUID.randomUUID().toString().replace("-",""));
+        user.setId(userid);
         user.setUsername("zhangsan");
         user.setPassword("123456");
         user.setNickname("张三");
@@ -30,7 +31,7 @@ public class UserMapperTest {
             int result = dao.insert(user);
             User user1 = dao.selectByPrimaryKey(user.getId());
             sqlSession.commit();
-            Assert.assertTrue(user.getId() == user1.getId());
+            Assert.assertTrue(user1.getId().equals(user.getId()));
         } catch (Exception e){
             System.out.println(e);
             sqlSession.rollback();
