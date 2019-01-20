@@ -1,5 +1,6 @@
 package com.chang.dao;
 
+import com.chang.domain.User;
 import com.chang.utils.SqlSessionFactoryUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
@@ -7,33 +8,27 @@ import org.junit.Test;
 
 import java.util.Date;
 
-public class UserDaoTest {
+public class UserMapperTest {
 
     @Test
     public void testAdd(){
+
         User user = new User();
         user.setUsername("zhangsan");
         user.setPassword("123456");
-        user.setNikename("张三");
+        user.setNickname("张三");
         user.setEmail("zhangsan@qq.com");
         user.setBirthday(new Date());
-        user.setCreatedTime(new Date());
+        user.setCreatedtime(new Date());
 
         SqlSession sqlSession = null;
-
         try {
-
-        sqlSession = SqlSessionFactoryUtil.openSession();
-        UserDao dao = sqlSession.getMapper(UserDao.class);
-        dao.add(user);
-
-        User user1 = dao.find("zhangsan");
-        Assert.assertTrue(user1 != null);
-
-//        dao.delete(user1);
-
-        sqlSession.commit();
-
+            sqlSession = SqlSessionFactoryUtil.openSession();
+            UserMapper dao = sqlSession.getMapper(UserMapper.class);
+            int result = dao.insert(user);
+//            dao.deleteByPrimaryKey(user.getId());
+            sqlSession.commit();
+            Assert.assertTrue(result == 1);
         } catch (Exception e){
             System.out.println(e);
             sqlSession.rollback();
