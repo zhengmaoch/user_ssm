@@ -25,11 +25,11 @@
     from user
     where username = #{username,jdbcType=VARCHAR}
   </select>
-  <select id="getByUsernameAndPassword" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="getByUsernameAndPassword" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
     from user
-    where username = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    where username = #{param1} and password = #{param2}
   </select>
   <select id="getAllUsers" resultMap="BaseResultMap">
     select
@@ -42,7 +42,7 @@
     from user order by createdtime desc limit #{param1}, #{param2}
   </select>
   <select id="getTotal" resultType="int">
-    select count (*) from user
+    select count(*) from user
   </select>
   <delete id="delete" parameterType="java.lang.String" >
     delete from user

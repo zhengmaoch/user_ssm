@@ -57,6 +57,7 @@ public class UserController {
 
     @RequestMapping("/login")
     public String Login(){
+
         return "login";
     }
 
@@ -70,7 +71,7 @@ public class UserController {
         if(user != null){
             request.getSession().setAttribute("user", user);
 
-            return "redirect:listUser";
+            return "redirect:/user/listUser";
         }
 
         request.setAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url="+request.getContextPath()+"/servlet/LoginUIServlet'>");
@@ -91,38 +92,39 @@ public class UserController {
     @RequestMapping("/listUser")
     public String List(HttpServletRequest request, HttpServletResponse response){
 
-        int start = 0;
-        int count = 10;
+//        int start = 0;
+//        int count = 10;
+//
+//        try {
+//            start = Integer.parseInt(request.getParameter("page.start"));
+//            count = Integer.parseInt(request.getParameter("page.count"));
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        Page page = new Page(start, count);
 
-        try {
-            start = Integer.parseInt(request.getParameter("page.start"));
-            count = Integer.parseInt(request.getParameter("page.count"));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        Page page = new Page(start, count);
-
-        List<User> users = userService.list(page.getStart(),page.getCount());
-        int total = userService.getTotal();
-        page.setTotal(total);
+        List<User> users = userService.getAllUser();
+//        List<User> users = userService.list(page.getStart(),page.getCount());
+//        int total = userService.getTotal();
+//        page.setTotal(total);
         request.setAttribute("users", users);
-        request.setAttribute("page", page);
-        return "listUser";
+//        request.setAttribute("page", page);
+        return "listuser";
     }
 
     @RequestMapping("/deleteUser")
     public String Delete(String id){
 
         userService.deleteUser(id);
-        return "redirect:listUser";
+        return "redirect:listuser";
     }
 
     @RequestMapping("/deleteAllUser")
     public String Delete(){
 
         userService.deleteAllUser();
-        return "redirect:listUser";
+        return "redirect:listuser";
     }
 
     @RequestMapping("/editUser")
@@ -142,7 +144,7 @@ public class UserController {
 
         if(!b){
             request.setAttribute("form", form);
-            return "redirect:editUser";
+            return "redirect:edituser";
         }
 
         User user = new User();
@@ -151,7 +153,7 @@ public class UserController {
         try {
             userService.updateUser(user);
             request.setAttribute("message","恭喜您，编辑成功！");
-            return "redirect:listUser";
+            return "redirect:listuser";
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("message", "服务器出现未知错误！");

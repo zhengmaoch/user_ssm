@@ -26,7 +26,7 @@
     </script>
 </head>
 <body style="text-align: center">
-<div align="right">${user.nikename }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/logout">退出</a></div>
+<div align="right">${user.nickname }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/logout">退出</a></div>
 <br/><br/>
 <c:if test="${!empty(users)}">
 <table width="70%" border="1" cellspacing="4" cellpadding="4" align="center" style="border-collapse: collapse">
@@ -43,10 +43,10 @@
     <tr>
         <td>${user.id}</td>
         <td>${user.username}</td>
-        <td>${user.nikename}</td>
+        <td>${user.nickname}</td>
         <td>${user.email}</td>
         <td>${user.birthday}</td>
-        <td>${user.createdTime}</td>
+        <td>${user.createdtime}</td>
         <td>
             <a href="${pageContext.request.contextPath}/user/editUser/${user.id}">编辑</a>&nbsp&nbsp&nbsp&nbsp
             <a href="javascript:void(0)" onclick="deleteuser('${user.id}') ">删除</a>
