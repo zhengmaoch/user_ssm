@@ -6,20 +6,27 @@ import com.chang.service.UserService;
 import com.chang.utils.Page;
 import com.chang.utils.WebUtils;
 import com.chang.web.model.UserModel;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.traversal.NodeFilter;
 
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import java.util.Date;
 import java.util.List;
 
+@Controller
+@RequestMapping("/user")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @RequestMapping("/register")
@@ -49,7 +56,12 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public String Login(HttpServletRequest request, HttpServletResponse response){
+    public String Login(){
+        return "login";
+    }
+
+    @RequestMapping("/doLogin")
+    public String DoLogin(HttpServletRequest request, HttpServletResponse response){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 

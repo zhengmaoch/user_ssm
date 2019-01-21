@@ -14,7 +14,7 @@
 </head>
 <body style="text-align: center">
 <div style="text-align: center">
-<form action="${pageContext.request.contextPath}/servlet/RegisterServlet" method="post">
+<form action="${pageContext.request.contextPath}/user/register" method="post">
     <table align="center">
         <tr>
             <td>账号:</td>

@@ -17,12 +17,12 @@
   <h2>用户管理网站</h2>
   <br/><br/>
   <c:if test="${!empty(user)}">
-    欢迎您：${user.nikename} <a href="${pageContext.request.contextPath}/servlet/LogoutServlet">注销</a>
+    欢迎您：${user.nikename} <a href="${pageContext.request.contextPath}/user/logout">注销</a>
   </c:if>
 <div style="text-align: right">
   <c:if test="${empty(user)}">
-    <a href="${pageContext.request.contextPath}/servlet/RegisterUIServlet">注册</a>
-    <a href="${pageContext.request.contextPath}/servlet/LoginUIServlet">登录</a>
+    <a href="${pageContext.request.contextPath}/user/register">注册</a>
+    <a href="${pageContext.request.contextPath}/user/login">登录</a>
   </c:if>
 </div>
   <br/>

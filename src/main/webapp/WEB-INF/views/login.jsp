@@ -27,7 +27,7 @@
 </head>
 <body style="text-align: center">
 <div style="text-align: center">
-<form action="${pageContext.request.contextPath}/servlet/LoginServlet" method="post">
+<form action="${pageContext.request.contextPath}/user/doLogin" method="post">
     <table align="center">
         <tr>
             <td>用户名:</td>
@@ -43,7 +43,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="button" name="register" value="注  册" onclick="window.location.href='${pageContext.request.contextPath}/servlet/RegisterUIServlet';"/>
+                <input type="button" name="register" value="注  册" onclick="window.location.href='${pageContext.request.contextPath}/user/register';"/>
                 <input type="submit" name="login" value="登  录"/>
             </td>
         </tr>

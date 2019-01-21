@@ -6,9 +6,11 @@ import com.chang.domain.User;
 import com.chang.exception.UserExistException;
 import com.chang.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserService implements IUserService {
 
     @Autowired
@@ -57,10 +59,12 @@ public class UserService implements IUserService {
         userDao.update(user);
     }
 
+    @Override
     public void deleteAllUser() {
         userDao.deleteAll();
     }
 
+    @Override
     public List<User> list(int start, int count) {
         return userDao.list(start, count);
     }

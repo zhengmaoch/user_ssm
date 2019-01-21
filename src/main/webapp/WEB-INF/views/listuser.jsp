@@ -14,19 +14,19 @@
         function deleteuser(id) {
             var b = window.confirm("您确定要删除吗？")
             if(b){
-                window.location.href="${pageContext.request.contextPath}/servlet/DeleteUserServlet?id=" + id;
+                window.location.href="${pageContext.request.contextPath}/user/deleteUser/" + id;
             }
         }
         function deletealluser() {
             var b = window.confirm("您确定要删除所有用户吗？")
             if(b){
-                window.location.href="${pageContext.request.contextPath}/servlet/DeleteAllUserServlet";
+                window.location.href="${pageContext.request.contextPath}/user/deleteAllUser";
             }
         }
     </script>
 </head>
 <body style="text-align: center">
-<div align="right">${user.nikename }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/servlet/LogoutServlet">退出</a></div>
+<div align="right">${user.nikename }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/logout">退出</a></div>
 <br/><br/>
 <c:if test="${!empty(users)}">
 <table width="70%" border="1" cellspacing="4" cellpadding="4" align="center" style="border-collapse: collapse">
@@ -48,7 +48,7 @@
         <td>${user.birthday}</td>
         <td>${user.createdTime}</td>
         <td>
-            <a href="${pageContext.request.contextPath}/servlet/EditUserServlet?id=${user.id}">编辑</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="${pageContext.request.contextPath}/user/editUser/${user.id}">编辑</a>&nbsp&nbsp&nbsp&nbsp
             <a href="javascript:void(0)" onclick="deleteuser('${user.id}') ">删除</a>
         </td>
     </tr>
