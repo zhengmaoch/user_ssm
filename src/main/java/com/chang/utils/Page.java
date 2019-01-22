@@ -26,23 +26,26 @@ public class Page {
     public int getTotalPage(){
         int totalPage;
 
-        if(0 == total % count)
+        if(0 == total % count) {
             totalPage = total / count;
-        else
+        } else {
             totalPage = total / count + 1;
+        }
 
-        if (0 == totalPage)
+        if (0 == totalPage) {
             totalPage = 1;
+        }
         return  totalPage;
     }
 
     public int getLast(){
         int last;
 
-        if(0 == total % count)
+        if(0 == total % count) {
             last = total - count;
-        else
+        } else {
             last = total - total % count;
+        }
 
         last = last < 0 ? 0 : last;
         return last;

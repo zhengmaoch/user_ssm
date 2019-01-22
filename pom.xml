@@ -32,15 +32,21 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
-      <version>${mybatis.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>MySQL</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>${mysql-connector-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mchange</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>${mybatis.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -65,15 +71,15 @@
       <artifactId>jstl</artifactId>
       <version>1.2</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.glassfish.web</groupId>-->
-      <!--<artifactId>jstl-impl</artifactId>-->
-      <!--<version>1.2</version>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
       <version>1.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.8</version>
     </dependency>
 
     <dependency>
@@ -115,11 +121,6 @@
       <version>2.9.8</version>
     </dependency>
     <dependency>
-      <groupId>com.mchange</groupId>
-      <artifactId>c3p0</artifactId>
-      <version>0.9.5.2</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
       <version>${spring.version}</version>
@@ -132,6 +133,11 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <dependency>
@@ -180,19 +186,6 @@
               <port>8088</port>
               <path>/user</path>
             </configuration>
-          <!--<groupId>org.mortbay.jetty</groupId>-->
-          <!--<artifactId>maven-jetty-plugin</artifactId>-->
-          <!--<version>6.1.26</version>-->
-          <!--<configuration>-->
-            <!--<connectors>-->
-              <!--<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">-->
-                <!--<port>8888</port>-->
-                <!--<maxIdleTime>30000</maxIdleTime>-->
-              <!--</connector>-->
-            <!--</connectors>-->
-            <!--<webAppSourceDirectory>${project.build.directory}/${pom.artifactId}-${pom.version}</webAppSourceDirectory>-->
-            <!--<contextPath>/</contextPath>-->
-          <!--</configuration>-->
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>

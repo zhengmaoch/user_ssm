@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
-    <properties resource="database.properties"/>
+    <!-- 配置全局属性 -->
+    <properties resource="jdbc.properties"/>
     <settings>
         <!-- Globally enables or disables any caches configured in any mapper under this configuration -->
         <setting name="cacheEnabled" value="false"/>
         <!-- Sets the number of seconds the driver will wait for a response from the database -->
         <setting name="defaultStatementTimeout" value="5"/>
+        <!-- 使用列别名替换列名 默认:true -->
+        <setting name="useColumnLabel" value="true" />
         <!-- Enables automatic mapping from classic database column names A_COLUMN to camel case classic Java property names aColumn -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <!-- Allows JDBC support for generated keys. A compatible driver is required.
@@ -24,16 +26,16 @@
         <environment id="development">
             <transactionManager type="JDBC"></transactionManager>
             <dataSource type="POOLED">
-                <property name="driver" value="${driver}"/>
-                <property name="url" value="${url}"/>
-                <property name="username" value="${username}"/>
-                <property name="password" value="${password}"/>
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
             </dataSource>
         </environment>
     </environments>
 
-    <mappers>
-        <mapper resource="com/chang/mapper/UserDao.xml"/>
-    </mappers>
+    <!--<mappers>-->
+        <!--<mapper resource="com/chang/mapper/UserDao.xml"/>-->
+    <!--</mappers>-->
 
 </configuration>

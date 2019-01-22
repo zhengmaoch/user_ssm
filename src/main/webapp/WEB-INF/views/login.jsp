@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:set var="path" value="${pageContext.request.contextPath}"/>
+
 <html>
 <head>
     <title>用户登录</title>
@@ -43,7 +46,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="button" name="register" value="注  册" onclick="window.location.href='${pageContext.request.contextPath}/user/register';"/>
+                <input type="button" name="register" value="注  册" onclick="window.location.href='${path }/user/register';"/>
                 <input type="submit" name="login" value="登  录"/>
             </td>
         </tr>

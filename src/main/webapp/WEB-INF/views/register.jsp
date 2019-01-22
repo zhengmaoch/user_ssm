@@ -43,7 +43,7 @@
         <tr>
             <td>姓名:</td>
             <td>
-                <input type="text" name="nikename">
+                <input type="text" name="nickname">
             </td>
         </tr>
         <tr>

@@ -3,22 +3,15 @@ package com.chang.web.controller;
 import com.chang.domain.User;
 import com.chang.exception.UserExistException;
 import com.chang.service.UserService;
-import com.chang.utils.Page;
 import com.chang.utils.WebUtils;
 import com.chang.web.model.UserModel;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.w3c.dom.traversal.NodeFilter;
-
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +55,7 @@ public class UserController {
     }
 
     @RequestMapping("/doLogin")
-    public String DoLogin(HttpServletRequest request, HttpServletResponse response){
+    public String doLogin(HttpServletRequest request, HttpServletResponse response){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -70,8 +63,7 @@ public class UserController {
 
         if(user != null){
             request.getSession().setAttribute("user", user);
-
-            return "redirect:/user/listUser";
+            return "redirect:/user/list";
         }
 
         request.setAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url="+request.getContextPath()+"/servlet/LoginUIServlet'>");
@@ -89,7 +81,7 @@ public class UserController {
         return "redirect:message";
     }
 
-    @RequestMapping("/listUser")
+    @RequestMapping("/list")
     public String List(HttpServletRequest request, HttpServletResponse response){
 
 //        int start = 0;
@@ -110,24 +102,24 @@ public class UserController {
 //        page.setTotal(total);
         request.setAttribute("users", users);
 //        request.setAttribute("page", page);
-        return "listuser";
+        return "listUser";
     }
 
-    @RequestMapping("/deleteUser")
+    @RequestMapping("/delete")
     public String Delete(String id){
 
         userService.deleteUser(id);
-        return "redirect:listuser";
+        return "redirect:/user/list";
     }
 
-    @RequestMapping("/deleteAllUser")
+    @RequestMapping("/deleteAll")
     public String Delete(){
 
         userService.deleteAllUser();
-        return "redirect:listuser";
+        return "redirect:/user/list";
     }
 
-    @RequestMapping("/editUser")
+    @RequestMapping("/edit")
     public ModelAndView Edit(String id){
 
         ModelAndView mav = new ModelAndView("editUser");
@@ -136,7 +128,7 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping("/updateUser")
+    @RequestMapping("/update")
     public String Update(HttpServletRequest request, HttpServletResponse response){
 
         UserModel form = WebUtils.requestToModel(request, UserModel.class);
@@ -144,7 +136,7 @@ public class UserController {
 
         if(!b){
             request.setAttribute("form", form);
-            return "redirect:edituser";
+            return "redirect:/user/edit";
         }
 
         User user = new User();
@@ -153,7 +145,7 @@ public class UserController {
         try {
             userService.updateUser(user);
             request.setAttribute("message","恭喜您，编辑成功！");
-            return "redirect:listuser";
+            return "redirect:/user/list";
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("message", "服务器出现未知错误！");

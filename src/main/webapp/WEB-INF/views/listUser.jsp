@@ -7,26 +7,33 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<c:set var="path" value="${pageContext.request.contextPath}"/>
+
 <html>
 <head>
-    <title>用户管理</title>
+    <title>用户列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
     <script type="text/javascript">
         function deleteuser(id) {
             var b = window.confirm("您确定要删除吗？")
             if(b){
-                window.location.href="${pageContext.request.contextPath}/user/deleteUser/" + id;
+                window.location.href="${path }/user/delete/" + id;
             }
         }
         function deletealluser() {
             var b = window.confirm("您确定要删除所有用户吗？")
             if(b){
-                window.location.href="${pageContext.request.contextPath}/user/deleteAllUser";
+                window.location.href="${path }/user/deleteAll";
             }
         }
     </script>
 </head>
 <body style="text-align: center">
-<div align="right">${user.nickname }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/logout">退出</a></div>
+<div align="right">${user.nickname }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${path }/user/logout">退出</a></div>
 <br/><br/>
 <c:if test="${!empty(users)}">
 <table width="70%" border="1" cellspacing="4" cellpadding="4" align="center" style="border-collapse: collapse">
@@ -39,7 +46,7 @@
         <th>创建日期</th>
         <th>操作</th>
     </tr>
-<c:forEach items="${users }" var="user">
+<c:forEach var="user" items="${requestScope.get('list') }" varStatus="status">
     <tr>
         <td>${user.id}</td>
         <td>${user.username}</td>
@@ -48,7 +55,7 @@
         <td>${user.birthday}</td>
         <td>${user.createdtime}</td>
         <td>
-            <a href="${pageContext.request.contextPath}/user/editUser/${user.id}">编辑</a>&nbsp&nbsp&nbsp&nbsp
+            <a href="${path }/user/edit/${user.id}">编辑</a>&nbsp&nbsp|&nbsp&nbsp
             <a href="javascript:void(0)" onclick="deleteuser('${user.id}') ">删除</a>
         </td>
     </tr>
