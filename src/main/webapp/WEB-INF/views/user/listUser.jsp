@@ -21,13 +21,13 @@
         function deleteuser(id) {
             var b = window.confirm("您确定要删除吗？")
             if(b){
-                window.location.href="${path }/user/delete/" + id;
+                window.location.href="${pageContext.request.contextPath }/user/delete?id=" + id;
             }
         }
         function deletealluser() {
             var b = window.confirm("您确定要删除所有用户吗？")
             if(b){
-                window.location.href="${path }/user/deleteAll";
+                window.location.href="${pageContext.request.contextPath }/user/deleteAll";
             }
         }
     </script>
@@ -35,7 +35,7 @@
 <body style="text-align: center">
 <div align="right">${user.nickname }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${path }/user/logout">退出</a></div>
 <br/><br/>
-<c:if test="${!empty(users)}">
+<c:if test="${!empty(userModels)}">
 <table width="70%" border="1" cellspacing="4" cellpadding="4" align="center" style="border-collapse: collapse">
     <tr>
         <th>编号</th>
@@ -46,7 +46,7 @@
         <th>创建日期</th>
         <th>操作</th>
     </tr>
-<c:forEach var="user" items="${requestScope.get('list') }" varStatus="status">
+<c:forEach var="user" items="${userModels }" varStatus="status">
     <tr>
         <td>${user.id}</td>
         <td>${user.username}</td>
@@ -55,7 +55,7 @@
         <td>${user.birthday}</td>
         <td>${user.createdtime}</td>
         <td>
-            <a href="${path }/user/edit/${user.id}">编辑</a>&nbsp&nbsp|&nbsp&nbsp
+            <a href="${path }/user/edit?id=${user.id}">编辑</a>&nbsp&nbsp|&nbsp&nbsp
             <a href="javascript:void(0)" onclick="deleteuser('${user.id}') ">删除</a>
         </td>
     </tr>
@@ -67,7 +67,7 @@
     </tr>
 </table>
 </c:if>
-<c:if test="${empty(users)}">
+<c:if test="${empty(userModels)}">
     没有任何用户存在！
 </c:if>
 </div>

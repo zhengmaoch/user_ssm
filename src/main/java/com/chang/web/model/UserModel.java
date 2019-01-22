@@ -1,7 +1,9 @@
 package com.chang.web.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +14,13 @@ public class UserModel {
     private String password;
     private String password2;
     private String email;
-    private String birthday;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthday;
     private String nickname;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createdtime;
 
     private Map errors = new HashMap();
 

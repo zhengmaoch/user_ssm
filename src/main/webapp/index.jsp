@@ -23,8 +23,8 @@
   </c:if>
 <div style="text-align: right">
   <c:if test="${empty(user)}">
-    <a href="${path }/user/register">注册</a>
-    <a href="${path }/user/login">登录</a>
+    <a href="${path }/user/toRegister">注册</a>
+    <a href="${path }/user/toLogin">登录</a>
   </c:if>
 </div>
   <br/>

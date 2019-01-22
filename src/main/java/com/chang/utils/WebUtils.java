@@ -32,27 +32,17 @@ public class WebUtils {
 
     }
 
-    public static void copyModel(UserModel form, User user) {
-        ConvertUtils.register(new Converter() {
-            @Override
-            public Object convert(Class type, Object o) {
-                if(o == null)
-                return null;
-                String string = (String) o;
-                if(string.trim().equals("")){
-                    return null;
-                }
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    return df.parse(string);
-                } catch (ParseException e) {
-                    throw new RuntimeException();
-                }
-            }
-        }, Date.class);
-
+    public static void entityToModel(User entity, UserModel model) {
         try {
-            BeanUtils.copyProperties(user, form);
+            BeanUtils.copyProperties(model, entity);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public static void modelToEntity(UserModel model, User entity) {
+        try {
+            BeanUtils.copyProperties(entity, model);
         } catch (Exception e) {
             throw new RuntimeException();
         }
