@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="button" name="register" value="注  册" onclick="window.location.href='${path }/user/register';"/>
+                <input type="button" name="register" value="注  册" onclick="window.location.href='${pageContext.request.contextPath}/user/register';"/>
                 <input type="submit" name="login" value="登  录"/>
             </td>
         </tr>
