@@ -16,7 +16,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/user")
-@SessionAttributes("user")
+@SessionAttributes("form")
 public class UserController {
 
     @Resource
@@ -61,12 +61,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(Model model, @SessionAttribute("user") UserForm form){
+    public String login(Model model, UserForm form){
 
         User user = userService.login(form.getUsername(), form.getPassword());
 
         if(user != null){
-            model.addAttribute("user", user);
+            WebUtils.entityToModel(user, form);
+            model.addAttribute("form", form);
             return "redirect:/user/list";
         }
 
@@ -77,9 +78,9 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(Model model, SessionStatus sessionStatus, HttpSession session){
 
-        UserForm form = (UserForm) session.getAttribute("user");
+        UserForm form = (UserForm) session.getAttribute("form");
         // 清除HttpSession的session
-        session.removeAttribute("user");
+        session.removeAttribute("form");
         // 只清除@SessionAttributes的session，不会清除HttpSession的数据
         sessionStatus.setComplete();
 
@@ -88,7 +89,7 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public String list(Model model, Page page){
+    public String list(Model model, @PathVariable(name = "page", required = false) Page page){
 
         int start = 0;
         int count = 10;
@@ -115,8 +116,7 @@ public class UserController {
             forms.add(form);
         }
 
-        model.addAttribute("forms", forms);
-        model.addAttribute("forms", forms);
+        model.addAttribute("users", forms);
 //        request.setAttribute("page", page);
         return "/user/listUser";
     }
