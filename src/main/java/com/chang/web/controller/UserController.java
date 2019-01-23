@@ -3,35 +3,35 @@ package com.chang.web.controller;
 import com.chang.domain.User;
 import com.chang.exception.UserExistException;
 import com.chang.service.UserService;
-import com.chang.utils.MD5Utils;
+import com.chang.utils.Page;
 import com.chang.utils.WebUtils;
-import com.chang.web.model.UserModel;
+import com.chang.web.model.UserForm;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
 @RequestMapping("/user")
+@SessionAttributes("user")
 public class UserController {
 
     @Resource
     private UserService userService;
 
-    @RequestMapping("/toRegister")
-    public String toRegister(){
+    @GetMapping("/Register")
+    public String Register(){
 
         return "user/register";
     }
 
-    @RequestMapping("/register")
-    public String register(HttpServletRequest request, HttpServletResponse response){
+    @PostMapping("/register")
+    public String register(Model model, UserForm form){
 
-        UserModel form = WebUtils.requestToModel(request, UserModel.class);
+        // 表单服务器校验
         boolean b = form.validate();
 
         User user = new User();
@@ -41,58 +41,58 @@ public class UserController {
 
         try {
             userService.register(user);
-            request.setAttribute("message","恭喜您，注册成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url="+request.getContextPath()+"/index.jsp'>");
+            model.addAttribute("message","恭喜您，注册成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3';url='${pageContext.request.contextPath}/index.jsp'>");
             return "message";
         } catch (UserExistException e) {
             form.getErrors().put("username","注册的用户名已存在！");
             return "register";
         } catch (Exception e){
             e.printStackTrace();
-            request.setAttribute("message","服务器出现未知错误！");
+            model.addAttribute("message","服务器出现未知错误！");
             return "message";
         }
 
     }
 
-    @RequestMapping("/toLogin")
-    public String toLogin(){
+    @GetMapping("/login")
+    public String login(){
 
         return "user/login";
     }
 
-    @RequestMapping("/login")
-    public String login(HttpServletRequest request, HttpServletResponse response){
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    @PostMapping("/login")
+    public String login(Model model, @SessionAttribute("user") UserForm form){
 
-        User user = userService.login(username, password);
+        User user = userService.login(form.getUsername(), form.getPassword());
 
         if(user != null){
-            request.getSession().setAttribute("user", user);
+            model.addAttribute("user", user);
             return "redirect:/user/list";
         }
 
-        request.setAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url="+request.getContextPath()+"/user/toLogin'>");
+        model.addAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3';url='${pageContext.request.contextPath}/user/login'>");
         return "message";
     }
 
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response){
-        HttpSession session = request.getSession(false);
-        if(session != null){
-            session.removeAttribute("user");
-        }
+    @GetMapping("/logout")
+    public String logout(Model model, SessionStatus sessionStatus, HttpSession session){
 
-        request.setAttribute("message","注销成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url="+request.getContextPath()+"/index.jsp'>");
+        UserForm form = (UserForm) session.getAttribute("user");
+        // 清除HttpSession的session
+        session.removeAttribute("user");
+        // 只清除@SessionAttributes的session，不会清除HttpSession的数据
+        sessionStatus.setComplete();
+
+        model.addAttribute("message",form.getNickname() + "注销成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3';url='${pageContext.request.contextPath}/index.jsp'>");
         return "message";
     }
 
-    @RequestMapping("/list")
-    public String list(HttpServletRequest request, HttpServletResponse response){
+    @GetMapping("/list")
+    public String list(Model model, Page page){
 
-//        int start = 0;
-//        int count = 10;
-//
+        int start = 0;
+        int count = 10;
+
 //        try {
 //            start = Integer.parseInt(request.getParameter("page.start"));
 //            count = Integer.parseInt(request.getParameter("page.count"));
@@ -106,66 +106,65 @@ public class UserController {
 //        List<User> users = userService.list(page.getStart(),page.getCount());
 //        int total = userService.getTotal();
 //        page.setTotal(total);
-        List<UserModel> userModels = new ArrayList<UserModel>();
+
+        List<UserForm> forms = new ArrayList<UserForm>();
 
         for (User user : users) {
-            UserModel userModel = new UserModel();
-            WebUtils.entityToModel(user, userModel);
-            userModels.add(userModel);
+            UserForm form = new UserForm();
+            WebUtils.entityToModel(user, form);
+            forms.add(form);
         }
 
-        request.setAttribute("userModels", userModels);
+        model.addAttribute("forms", forms);
+        model.addAttribute("forms", forms);
 //        request.setAttribute("page", page);
         return "/user/listUser";
     }
 
-    @RequestMapping("/delete")
-    public String delete(String id){
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable String id){
 
         userService.deleteUser(id);
         return "redirect:/user/list";
     }
 
-    @RequestMapping("/deleteAll")
+    @DeleteMapping("/deleteAll")
     public String delete(){
 
         userService.deleteAllUser();
         return "redirect:/user/list";
     }
 
-    @RequestMapping("/edit")
-    public ModelAndView edit(String id){
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable String id){
 
-        ModelAndView mav = new ModelAndView("user/editUser");
         User user = userService.getUser(id);
-        UserModel userModel = new UserModel();
-        WebUtils.entityToModel(user, userModel);
-        mav.addObject("user",userModel);
-        return mav;
+        UserForm form = new UserForm();
+        WebUtils.entityToModel(user, form);
+        model.addAttribute("user", form);
+        return "redirect:/user/editUser";
     }
 
-    @RequestMapping("/update")
-    public String update(HttpServletRequest request, HttpServletResponse response){
+    @PutMapping("/update")
+    public String update(Model model, UserForm form){
 
-        UserModel form = WebUtils.requestToModel(request, UserModel.class);
         boolean b = form.validate();
 
         if(!b){
-            request.setAttribute("form", form);
+            model.addAttribute("form", form);
             return "redirect:/user/edit";
         }
 
         User user = new User();
         WebUtils.modelToEntity(form, user);
 
-
         try {
             userService.updateUser(user);
-            request.setAttribute("message","恭喜您，编辑成功！");
+            model.addAttribute("message","恭喜您，编辑成功！");
             return "redirect:/user/list";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "服务器出现未知错误！");
+            model.addAttribute("message", "服务器出现未知错误！");
             return "message";
         }
     }

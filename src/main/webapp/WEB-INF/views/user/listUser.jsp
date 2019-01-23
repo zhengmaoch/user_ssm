@@ -33,9 +33,9 @@
     </script>
 </head>
 <body style="text-align: center">
-<div align="right">${user.nickname }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${path }/user/logout">退出</a></div>
+<div align="right">${sessionScope.user.nickname }，欢迎您!当前${count }人在线！&nbsp;&nbsp;&nbsp;&nbsp;<a href="${path }/user/logout">退出</a></div>
 <br/><br/>
-<c:if test="${!empty(userModels)}">
+<c:if test="${!empty(userForms)}">
 <table width="70%" border="1" cellspacing="4" cellpadding="4" align="center" style="border-collapse: collapse">
     <tr>
         <th>编号</th>
@@ -46,7 +46,7 @@
         <th>创建日期</th>
         <th>操作</th>
     </tr>
-<c:forEach var="user" items="${userModels }" varStatus="status">
+<c:forEach var="user" items="${userForms }" varStatus="status">
     <tr>
         <td>${user.id}</td>
         <td>${user.username}</td>
@@ -67,7 +67,7 @@
     </tr>
 </table>
 </c:if>
-<c:if test="${empty(userModels)}">
+<c:if test="${empty(userForms)}">
     没有任何用户存在！
 </c:if>
 </div>

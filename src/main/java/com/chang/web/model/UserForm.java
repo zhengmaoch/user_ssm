@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class UserModel {
+public class UserForm {
     private String id;
     private String username;
     private String password;

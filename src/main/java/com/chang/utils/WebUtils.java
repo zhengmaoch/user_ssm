@@ -1,15 +1,9 @@
 package com.chang.utils;
 
 import com.chang.domain.User;
-import com.chang.web.model.UserModel;
+import com.chang.web.model.UserForm;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
-
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.UUID;
 
@@ -32,7 +26,7 @@ public class WebUtils {
 
     }
 
-    public static void entityToModel(User entity, UserModel model) {
+    public static void entityToModel(User entity, UserForm model) {
         try {
             BeanUtils.copyProperties(model, entity);
         } catch (Exception e) {
@@ -40,7 +34,7 @@ public class WebUtils {
         }
     }
 
-    public static void modelToEntity(UserModel model, User entity) {
+    public static void modelToEntity(UserForm model, User entity) {
         try {
             BeanUtils.copyProperties(entity, model);
         } catch (Exception e) {
