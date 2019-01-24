@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
@@ -45,7 +46,7 @@
             <tr>
                 <td>生日:</td>
                 <td>
-                    <input id="d11" type="text" name="birthday" value="${user.birthday }" onClick="WdatePicker()">
+                    <input id="d11" type="text" name="birthday" value='<fmt:formatDate value="${user.birthday }" pattern="yyyy-MM-dd"/>' onClick="WdatePicker()">
                 </td>
             </tr>
             <tr>
@@ -60,7 +61,7 @@
                     <input type="submit" name="save" value="保  存">
                 </td>
                 <td>
-                    <input type="button" name="cancel" value="取  消" onclick="window.location.href='${pageContext.request.contextPath }/user/list/0/10'">
+                    <input type="button" name="cancel" value="取  消" onclick="window.location.href='${pageContext.request.contextPath }/user/list/1/10'">
                 </td>
             </tr>
     </table>
