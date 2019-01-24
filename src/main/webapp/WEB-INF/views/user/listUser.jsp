@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
@@ -38,7 +39,7 @@
 <br/><br/>
 
 <c:if test="${!empty(users)}">
-    <form action="<c:url value="${path}/list/${page.start}/${count}"/>" method="post">
+    <form action="<c:url value="${path}/list/${page.start}/${page.count}"/>" method="post">
         <p>记录总数:${page.total}，
             每页记录数:<input name="count" type="text" value="${page.count}"/>(<input type="submit" value="修改"/>)，
             总页数:${page.totalPage}，当前页:${page.start}</p>
@@ -61,8 +62,8 @@
         <td>${user.username}</td>
         <td>${user.nickname}</td>
         <td>${user.email}</td>
-        <td>${user.birthday}</td>
-        <td>${user.createdtime}</td>
+        <td><fmt:formatDate value="${user.birthday }" pattern="yyyy-MM-dd"/></td>
+        <td><fmt:formatDate value="${user.createdtime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
         <td>
             &nbsp&nbsp<a href="${path }/user/edit/${user.id}">编辑</a>&nbsp&nbsp|&nbsp&nbsp<a href="javascript:void(0)" onclick="deleteuser('${user.id}') ">删除</a>&nbsp&nbsp
         </td>

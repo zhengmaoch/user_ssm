@@ -19,7 +19,7 @@ public class UserForm {
     private Date birthday;
     private String nickname;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdtime;
 
     private Map errors = new HashMap();

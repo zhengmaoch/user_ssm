@@ -68,7 +68,7 @@ public class UserController {
         if(user != null){
             BeanUtils.copyProperties(user, form);
             model.addAttribute("form", form);
-            return "redirect:/user/list/0/10";
+            return "redirect:/user/list/1/10";
         }
 
         model.addAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url=/user/user/login'>");
@@ -96,9 +96,9 @@ public class UserController {
     @RequestMapping("/list/{start}/{count}")
     public String list(Model model, @PathVariable(value = "start", required = false) Integer start, @PathVariable(value = "count", required = false) Integer count) {
 
-        Page page = new Page(start == null ? 0 : start, count == null ? 10 : count);
+        Page page = new Page(start == null ? 1 : start, count == null ? 10 : count);
 
-        List<User> users = userService.list(page.getStart(),page.getCount());
+        List<User> users = userService.list((page.getStart() - 1) * page.getCount(),page.getCount());
         int total = userService.getTotal();
         page.setTotal(total);
 
@@ -119,14 +119,14 @@ public class UserController {
     public String delete(@PathVariable String id){
 
         userService.deleteUser(id);
-        return "redirect:/user/list/0/10";
+        return "redirect:/user/list/1/10";
     }
 
     @GetMapping("/deleteAll")
     public String delete(){
 
         userService.deleteAllUser();
-        return "redirect:/user/list/0/10";
+        return "redirect:/user/list/1/10";
     }
 
     @GetMapping("/edit/{id}")
@@ -155,7 +155,7 @@ public class UserController {
         try {
             userService.updateUser(user);
             model.addAttribute("message","恭喜您，编辑成功！");
-            return "redirect:/user/list/0/10";
+            return "redirect:/user/list/1/10";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("message", "服务器出现未知错误！");

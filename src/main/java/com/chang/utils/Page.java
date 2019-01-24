@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Page {
 
-    // 当前页数
+    // 起始记录数
     private int start;
 
     // 每页记录数
