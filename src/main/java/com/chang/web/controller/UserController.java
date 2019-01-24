@@ -4,8 +4,8 @@ import com.chang.domain.User;
 import com.chang.exception.UserExistException;
 import com.chang.service.UserService;
 import com.chang.utils.Page;
-import com.chang.utils.WebUtils;
 import com.chang.web.model.UserForm;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +35,8 @@ public class UserController {
         boolean b = form.validate();
 
         User user = new User();
-        WebUtils.modelToEntity(form, user);
-        user.setId(WebUtils.generateID());
+        BeanUtils.copyProperties(form, user);
+        user.setId(UUID.randomUUID().toString().replace("-",""));
         user.setCreatedtime(new Date());
 
         try {
@@ -66,7 +66,7 @@ public class UserController {
         User user = userService.login(form.getUsername(), form.getPassword());
 
         if(user != null){
-            WebUtils.entityToModel(user, form);
+            BeanUtils.copyProperties(user, form);
             model.addAttribute("form", form);
             return "redirect:/user/list";
         }
@@ -112,7 +112,7 @@ public class UserController {
 
         for (User user : users) {
             UserForm form = new UserForm();
-            WebUtils.entityToModel(user, form);
+            BeanUtils.copyProperties(user, form);
             forms.add(form);
         }
 
@@ -140,7 +140,7 @@ public class UserController {
 
         User user = userService.getUser(id);
         UserForm form = new UserForm();
-        WebUtils.entityToModel(user, form);
+        BeanUtils.copyProperties(user, form);
         model.addAttribute("user", form);
         return "redirect:/user/editUser";
     }
@@ -156,7 +156,7 @@ public class UserController {
         }
 
         User user = new User();
-        WebUtils.modelToEntity(form, user);
+        BeanUtils.copyProperties(form, user);
 
         try {
             userService.updateUser(user);
