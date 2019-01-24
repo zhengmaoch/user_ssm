@@ -22,8 +22,8 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @GetMapping("/Register")
-    public String Register(){
+    @GetMapping("/register")
+    public String register(){
 
         return "user/register";
     }
@@ -41,11 +41,11 @@ public class UserController {
 
         try {
             userService.register(user);
-            model.addAttribute("message","恭喜您，注册成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3';url='${pageContext.request.contextPath}/index.jsp'>");
+            model.addAttribute("message","恭喜您，注册成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url=/user/index'>");
             return "message";
         } catch (UserExistException e) {
             form.getErrors().put("username","注册的用户名已存在！");
-            return "register";
+            return "user/register";
         } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("message","服务器出现未知错误！");
@@ -68,45 +68,39 @@ public class UserController {
         if(user != null){
             BeanUtils.copyProperties(user, form);
             model.addAttribute("form", form);
-            return "redirect:/user/list";
+            return "redirect:/user/list/0/10";
         }
 
-        model.addAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3';url='${pageContext.request.contextPath}/user/login'>");
+        model.addAttribute("message", "用户名或密码错误！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url=/user/user/login'>");
         return "message";
     }
 
     @GetMapping("/logout")
     public String logout(Model model, SessionStatus sessionStatus, HttpSession session){
 
-        UserForm form = (UserForm) session.getAttribute("form");
-        // 清除HttpSession的session
-        session.removeAttribute("form");
-        // 只清除@SessionAttributes的session，不会清除HttpSession的数据
-        sessionStatus.setComplete();
+        UserForm form = new UserForm();
+        if(session.getAttribute("form") != null){
+            form = (UserForm) session.getAttribute("form");
+            // 清除HttpSession的session
+            session.removeAttribute("form");
 
-        model.addAttribute("message",form.getNickname() + "注销成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3';url='${pageContext.request.contextPath}/index.jsp'>");
+            // 只清除@SessionAttributes的session，不会清除HttpSession的数据
+            sessionStatus.setComplete();
+        }
+
+        String nikeName = form.getNickname() == null ? "" : form.getNickname();
+        model.addAttribute("message",nikeName + "注销成功！浏览器将在3秒后跳转。<meta http-equiv='refresh' content='3;url=/user/index'>");
         return "message";
     }
 
-    @GetMapping("/list")
-    public String list(Model model, @PathVariable(name = "page", required = false) Page page){
+    @RequestMapping("/list/{start}/{count}")
+    public String list(Model model, @PathVariable(value = "start", required = false) Integer start, @PathVariable(value = "count", required = false) Integer count) {
 
-        int start = 0;
-        int count = 10;
+        Page page = new Page(start == null ? 0 : start, count == null ? 10 : count);
 
-//        try {
-//            start = Integer.parseInt(request.getParameter("page.start"));
-//            count = Integer.parseInt(request.getParameter("page.count"));
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
-//        Page page = new Page(start, count);
-
-        List<User> users = userService.getAllUser();
-//        List<User> users = userService.list(page.getStart(),page.getCount());
-//        int total = userService.getTotal();
-//        page.setTotal(total);
+        List<User> users = userService.list(page.getStart(),page.getCount());
+        int total = userService.getTotal();
+        page.setTotal(total);
 
         List<UserForm> forms = new ArrayList<UserForm>();
 
@@ -117,22 +111,22 @@ public class UserController {
         }
 
         model.addAttribute("users", forms);
-//        request.setAttribute("page", page);
+        model.addAttribute("page", page);
         return "/user/listUser";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable String id){
 
         userService.deleteUser(id);
-        return "redirect:/user/list";
+        return "redirect:/user/list/0/10";
     }
 
-    @DeleteMapping("/deleteAll")
+    @GetMapping("/deleteAll")
     public String delete(){
 
         userService.deleteAllUser();
-        return "redirect:/user/list";
+        return "redirect:/user/list/0/10";
     }
 
     @GetMapping("/edit/{id}")
@@ -142,7 +136,7 @@ public class UserController {
         UserForm form = new UserForm();
         BeanUtils.copyProperties(user, form);
         model.addAttribute("user", form);
-        return "redirect:/user/editUser";
+        return "user/editUser";
     }
 
     @PutMapping("/update")
@@ -161,7 +155,7 @@ public class UserController {
         try {
             userService.updateUser(user);
             model.addAttribute("message","恭喜您，编辑成功！");
-            return "redirect:/user/list";
+            return "redirect:/user/list/0/10";
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("message", "服务器出现未知错误！");

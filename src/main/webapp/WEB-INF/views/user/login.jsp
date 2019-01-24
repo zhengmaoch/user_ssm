@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -30,7 +31,7 @@
 </head>
 <body style="text-align: center">
 <div style="text-align: center">
-<form action="${pageContext.request.contextPath}/user/login" method="post">
+<form action="${path}/user/login" method="post">
     <table align="center">
         <tr>
             <td>用户名:</td>
@@ -46,7 +47,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="button" name="register" value="注  册" onclick="window.location.href='${pageContext.request.contextPath}/user/toRegister';"/>
+                <input type="button" name="register" value="注  册" onclick="window.location.href='${path}/user/register';"/>
                 <input type="submit" name="login" value="登  录"/>
             </td>
         </tr>

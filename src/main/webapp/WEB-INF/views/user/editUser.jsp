@@ -16,7 +16,7 @@
 </head>
 <body style="text-align: center">
 <div style="text-align: center">
-<form action="${pageContext.request.contextPath}/user/update/${user.id }" method="post">
+<form action="${pageContext.request.contextPath}/user/update" method="post">
     <table align="center">
         <tr style="display: none">
             <td>编号:</td>
@@ -56,10 +56,11 @@
             </tr>
             <tr>
                 <td>
+                    <input type="hidden" name="_method" value="PUT">
                     <input type="submit" name="save" value="保  存">
                 </td>
                 <td>
-                    <input type="button" name="cancel" value="取  消" onclick="window.location.href='${pageContext.request.contextPath }/user/list'">
+                    <input type="button" name="cancel" value="取  消" onclick="window.location.href='${pageContext.request.contextPath }/user/list/0/10'">
                 </td>
             </tr>
     </table>

@@ -5,8 +5,13 @@ import lombok.Data;
 @Data
 public class Page {
 
+    // 当前页数
     private int start;
+
+    // 每页记录数
     private int count;
+
+    // 总记录数
     private int total;
 
     public Page(int start, int count){
@@ -15,14 +20,26 @@ public class Page {
         this.count = count;
     }
 
+    /**
+     * 是否存上一页
+     * @return
+     */
     public boolean isHasPreviouse(){
         return start != 0;
     }
 
+    /**
+     * 是否存在下一页
+     * @return
+     */
     public boolean isHasNext(){
         return start != getLast();
     }
 
+    /**
+     * 获取总页数
+     * @return
+     */
     public int getTotalPage(){
         int totalPage;
 
@@ -38,6 +55,10 @@ public class Page {
         return  totalPage;
     }
 
+    /**
+     * 获取最后页
+     * @return
+     */
     public int getLast(){
         int last;
 
